@@ -32,19 +32,15 @@ DESIGN + ARCHITECTURE:
                this service could perform the cURL operations to get .net
                file from loaded page
             -> passes .net to API_2
-        - API_2 that accepts .net file containing all subtitles
-            -> converts to .txt
-            -> passes to API_3
-        - API_3 parses .txt from API_2 and removes all non-language
-          elements such as html body, leaving only subtitle vocabulary
-            -> passes to API_4
-        - API_4 accepts .txt from API_3 and formats as JSON 
-        - API_5 accepts JSON from API_4 and reduces list by removing
+        - API_2 parses + puts words into list/datastructure
+        - API_3 converts into JSON
+        - API_4 accepts JSON from API_3 and reduces list by removing
           repeats and adding on traits to root words:
             -> num: number of times it shows up in script
             -> translation: translation to english (https://crates.io/crates/libretranslate)
                 **by default english, potentially add support for other
                   languages
+            -> get rid of things that are the same in both languages
           returns this JSON response to web app which displays it
 
 APPROACH:
