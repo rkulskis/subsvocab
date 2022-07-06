@@ -1,0 +1,18 @@
+{
+    "name" : "{{project-name}}",
+    "version" : "1.0",
+    "description" : "{{project-name}}",
+    "permissions": [],
+    "content_scripts": [
+        {
+            "matches": ["*://*.example.com/*"],
+            "js": [
+                "{{crate_name}}.js", "run_wasm.js"
+            ]
+        }
+    ],
+    "web_accessible_resources": [
+        "{{crate_name}}_bg.wasm"
+    ],
+    "manifest_version": 2
+}
