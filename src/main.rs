@@ -1,6 +1,7 @@
 use wasm_bindgen::prelude::*;
 use web_sys::*;
 mod parser;
+mod translator;
 
 #[macro_use]
 mod util;
