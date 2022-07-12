@@ -13,7 +13,7 @@ fi
 
 # grep only the english and spanish entries in the dictionary, remove <quote> tags and remove all accentuation, and remove all multi-word expressions
 # EN translations are in <orth> tags, ES root words are in <quote> tags
-ENTRIES=$(grep -aE '<orth>|<quote>' $1 | grep -v "<quote>.* .*" |  sed 's/.*<quote>//g;s/<\/quote>//g;s/.*<orth>/<orth>/g' | iconv -f UTF-8 -t ASCII//TRANSLIT | tr -d "~'!?")
+ENTRIES=$(grep -aE '<orth>|<quote>' $1 | grep -v "<quote>.* .*" |  sed 's/.*<quote>//g;s/<\/quote>//g;s/.*<orth>/<orth>/g' | iconv -f UTF-8 -t ASCII//TRANSLIT | tr -d "~'!?\"\.%")
 
 indicative_present()
 {
@@ -181,12 +181,14 @@ GERUND=$(gerund "$word" "$stem" "$ending")
 echo "${INDICATIVE_PRESENT} ${INDICATIVE_IMPERFECT} ${PRETERITE} ${FUTURE} ${CONDITIONAL} ${SUBJUNCTIVE_PRESENT} ${SUBJUNCTIVE_IMPERFECT} ${SUBJUNCTIVE_FUTURE} ${PAST_PARTICIPLE} ${GERUND}"
 }
 
-# echo "$ENTRIES" | grep "<orth>"
+create_dict()
+{
 echo "$ENTRIES"| while read line
 do
 	if [[ ${line: -1} == ">" ]] # if this is true, line is the english entry;
 	then 	                      # if not true, then we kow that line must be a singular spanish word
-		echo "$line" >> conjugated_dict.txt
+		el="${line//<orth>}"
+		echo "<en> ${el//<\/orth>}" >> conjugated_dict.txt
 	elif [[ ${line: -2} == "ar" ]] || [[ ${line: -2} == "er" ]] || [[ ${line:-2} == "ir" ]]
 	then
 		echo "$line $(noun_adj_handler "$line") $(verb_handler "$line")" >> conjugated_dict.txt # we call both in case this encounters a noun ending in -ar -er or -ir
@@ -196,3 +198,6 @@ fi
 done
 
 echo "finished creating conjugated_dict.txt!"
+}
+
+create_dict
