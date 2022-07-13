@@ -2,4 +2,5 @@
 /pkg
 Cargo.lock
 libtorch
+*.tei
 

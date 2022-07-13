@@ -1,8 +1,12 @@
-use std::str::SplitAsciiWhitespace;
-use std::{fs::File};
+extern crate unidecode;
+use unidecode::unidecode;
+use std::fs::File;
 use std::io::Read;
 use scraper::{Html, Selector};
 
+// this function accepts a slice representing the location of a .net subtitles file
+// and returns a vector of Strings such that each element is a word
+// in the subtitle script
 pub fn parse_subs(filename: &str) -> Vec<String> {
     // load in subs file and read to string
     let mut file = File::open(filename).expect("File not found");
@@ -22,16 +26,15 @@ pub fn parse_subs(filename: &str) -> Vec<String> {
 
     // parse string, removing all digits, punctuation, and extra spaces
     // collect into Vec<&str>
-
     let subs = subs
         .replace(&['(', ')', ',', '\"', '.', ';', ':', '\'','¿','?','\\','—','-','!','¡', '#','0','1','2','3','4','5','6','7','8','9'], " ");
 
-    let subs_vector: Vec<String> = subs
+    // create vector of Strings from subtitles and cast to ASCII using unidecode (removes
+    // accentuation). also make all lowercase 
+    let subtitles_vector: Vec<String> = subs
         .split_ascii_whitespace()
-        .map(|s| s.to_string())
+        .map(|s| unidecode(s).to_lowercase()) 
         .collect();
 
-    println!("{:?}", subs_vector);
-    // vec!["hi"]
-    subs_vector
+    subtitles_vector
 }

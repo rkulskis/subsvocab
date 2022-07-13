@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # this script accepts the .tei file in the form of an english-spanish dictionary,
 # and creates a string such that each line contains (in the following order):
@@ -188,12 +188,12 @@ do
 	if [[ ${line: -1} == ">" ]] # if this is true, line is the english entry;
 	then 	                      # if not true, then we kow that line must be a singular spanish word
 		el="${line//<orth>}"
-		echo "<en> ${el//<\/orth>}" >> conjugated_dict.txt
+		echo "<en> ${el//<\/orth>} </en>" >> conjugated_dict.txt
 	elif [[ ${line: -2} == "ar" ]] || [[ ${line: -2} == "er" ]] || [[ ${line:-2} == "ir" ]]
 	then
-		echo "$line $(noun_adj_handler "$line") $(verb_handler "$line")" >> conjugated_dict.txt # we call both in case this encounters a noun ending in -ar -er or -ir
+		echo "<es> $line $(noun_adj_handler "$line") $(verb_handler "$line")" >> conjugated_dict.txt # we call both in case this encounters a noun ending in -ar -er or -ir
 	else
-		echo "$line $(noun_adj_handler "$line")" >> conjugated_dict.txt
+		echo "<es> $line $(noun_adj_handler "$line")" >> conjugated_dict.txt
 fi
 done
 
